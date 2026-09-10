@@ -75,4 +75,16 @@ public class TableService {
         return mesaRepository.findByIdAndAdminId(id, adminId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Mesa não encontrada"));
     }
+
+    public ResponseEntity<ResponseTableDTO> updateTable(Long id, CreateTableDTO mesadto, Long userId) {
+        TableEntity mesa = getTableById(id, userId);
+
+        mesa.setNumber(mesadto.getNumber() != null ? mesadto.getNumber() : mesa.getNumber());
+        mesa.setStatus(mesadto.getStatus() != null ? mesadto.getStatus() : mesa.getStatus());
+        mesa.setTitular(mesadto.getTitular() != null ? mesadto.getTitular() : mesa.getTitular());
+
+        mesa = mesaRepository.save(mesa);
+
+        return ResponseEntity.ok(mesaMapper.entityToResponse(mesa));
+    }
 }

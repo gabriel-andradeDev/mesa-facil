@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers("/api/auth").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/user/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/user").authenticated()
                         .requestMatchers("/api/user/**").hasRole(UserRole.ADMIN.name())
                         .anyRequest().authenticated()
                 )

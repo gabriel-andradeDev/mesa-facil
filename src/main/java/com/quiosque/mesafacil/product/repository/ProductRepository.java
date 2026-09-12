@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
              Long id
     );
 
-    List<ProductEntity> findAllByMesaIdIdAndAdminId(Long mesaId, Long adminId);
+    List<ProductEntity> findAllByMesa_IdAndAdminId(Long mesaId, Long adminId);
 
     void deleteAllByAdminId(Long adminId);
 }

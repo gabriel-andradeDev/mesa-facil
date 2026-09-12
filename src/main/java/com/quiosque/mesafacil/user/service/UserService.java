@@ -61,8 +61,8 @@ public class UserService {
                 () -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado"));
     }
 
-    public ResponseEntity<ResponseUserDTO> updateUser(Long id, CreateUserDTO dto, Long userId) {
-        UserEntity user = getUserById(id);
+    public ResponseEntity<ResponseUserDTO> updateUser(CreateUserDTO dto, Long userId) {
+        UserEntity user = getUserById(userId);
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setName(dto.getName() != null ? dto.getName() : user.getName());
         user.setEmail(user.getEmail());

@@ -16,8 +16,8 @@ public class ProductMapper {
         response.setPrice(product.getPrice());
         response.setQuantity(product.getQuantity());
         response.setStatus(product.getStatus());
-        response.setTableNumber(product.getMesaId().getNumber());
-        response.setTitular(product.getMesaId().getTitular());
+        response.setTableNumber(product.getMesa().getNumber());
+        response.setTitular(product.getMesa().getTitular());
 
         if (product.getCreatedBy() != null) {
             response.setWaiterName(product.getCreatedBy().getName());

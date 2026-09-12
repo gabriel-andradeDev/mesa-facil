@@ -50,7 +50,7 @@ public class ProductService {
         product.setDescription(createProductDTO.getDescription());
         product.setStatus(createProductDTO.getStatus());
         product.setQuantity(createProductDTO.getQuantity());
-        product.setMesaId(table);
+        product.setMesa(table);
 
         product.setCreatedBy(user);
 
@@ -93,8 +93,8 @@ public class ProductService {
         response.setStatus(savedProduct.getStatus());
         response.setQuantity(savedProduct.getQuantity());
         response.setWaiterName(user.getName());
-        response.setTableNumber(savedProduct.getMesaId().getNumber());
-        response.setTitular(savedProduct.getMesaId().getTitular());
+        response.setTableNumber(savedProduct.getMesa().getNumber());
+        response.setTitular(savedProduct.getMesa().getTitular());
 
 
         return ResponseEntity.ok(response);
@@ -128,7 +128,7 @@ public class ProductService {
         UserEntity user = userService.getUserById(userId);
         Long adminId = waiterService.getAdminForUser(user).getId();
         tableService.getTableById(tableId, userId);
-        List<ProductEntity> products = productRepository.findAllByMesaIdIdAndAdminId(tableId, adminId);
+        List<ProductEntity> products = productRepository.findAllByMesa_IdAndAdminId(tableId, adminId);
         return products.stream().map(mapper::productToResponse).toList();
     }
 
@@ -159,7 +159,7 @@ public class ProductService {
         updatedProduct.setDescription(dto.getDescription() != null ? dto.getDescription() : product.getDescription());
         updatedProduct.setStatus(dto.getStatus() != null ? dto.getStatus() : product.getStatus());
         updatedProduct.setQuantity(dto.getQuantity() != null ? dto.getQuantity() : product.getQuantity());
-        updatedProduct.setMesaId(dto.getMesaId() != null ? dto.getMesaId() : product.getMesaId());
+        updatedProduct.setMesa(dto.getMesa() != null ? dto.getMesa() : product.getMesa());
         updatedProduct.setAdmin(product.getAdmin());
         updatedProduct.setCreatedBy(product.getCreatedBy());
         updatedProduct.setId(product.getId());

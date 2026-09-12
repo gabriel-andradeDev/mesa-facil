@@ -11,6 +11,7 @@ import com.quiosque.mesafacil.user.repository.WaiterRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,7 +27,7 @@ public class UserService {
     private UserMapper mapper;
     private final UserRepository userRepository;
     private final WaiterRepository waiterRepository;
-    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<ResponseUserDTO> createUser(CreateUserDTO dto){
         UserEntity user = UserEntity.builder()
@@ -58,5 +59,19 @@ public class UserService {
     public UserEntity getUserById(Long id){
         return userRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado"));
+    }
+
+    public ResponseEntity<ResponseUserDTO> updateUser(Long id, CreateUserDTO dto, Long userId) {
+        UserEntity user = getUserById(id);
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setName(dto.getName() != null ? dto.getName() : user.getName());
+        user.setEmail(user.getEmail());
+        user.setPassword(dto.getPassword() != null ? dto.getPassword() : user.getPassword());
+        user.setRole(dto.getRole());
+        user.setId(userId);
+
+        UserEntity updatedUser = userRepository.save(user);
+        ResponseUserDTO responseUserDTO = mapper.EntityToResponse(updatedUser);
+        return ResponseEntity.ok(responseUserDTO);
     }
 }

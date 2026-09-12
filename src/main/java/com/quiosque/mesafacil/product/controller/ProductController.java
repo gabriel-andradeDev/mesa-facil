@@ -2,6 +2,7 @@ package com.quiosque.mesafacil.product.controller;
 
 import com.quiosque.mesafacil.product.dto.CreateProductDTO;
 import com.quiosque.mesafacil.product.dto.ResponseProductDTO;
+import com.quiosque.mesafacil.product.entity.ProductEntity;
 import com.quiosque.mesafacil.product.service.ProductService;
 import com.quiosque.mesafacil.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -41,5 +42,10 @@ public class ProductController {
             @PathVariable Long mesaId,
             @CurrentSecurityContext(expression = "authentication.principal") UserEntity user){
         return productService.getProductsByTableId(mesaId, user.getId());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductEntity dto, @CurrentSecurityContext(expression = "authentication.principal") UserEntity user) {
+        return productService.updateProduct(id, dto, user.getId());
     }
 }

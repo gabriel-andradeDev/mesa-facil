@@ -169,4 +169,24 @@ public class ProductService {
         return ResponseEntity.ok(mapper.productToResponse(updatedProduct));
     }
 
+    public ResponseEntity<Void> deleteProduct(Long id, Long userId) {
+        UserEntity user = userService.getUserById(userId);
+        ProductEntity product = productRepository.findById(id).orElse(null);
+
+        if (product == null) {
+            throw new RuntimeException("Produto não encontrado");
+        }
+
+        Long adminId = user.getRole() == UserRole.WAITER
+                ? waiterService.getAdminForUser(user).getId()
+                : user.getId();
+
+        if (!product.getAdmin().getId().equals(adminId)) {
+            throw new RuntimeException("Você não tem permissão para deletar este produto");
+        }
+
+        productRepository.delete(product);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -34,4 +34,9 @@ public class TableController {
     public ResponseEntity<ResponseTableDTO> updateTable(@PathVariable Long id, @RequestBody CreateTableDTO mesas, @CurrentSecurityContext(expression = "authentication.principal") UserEntity user) {
         return mesaService.updateTable(id, mesas, user.getId());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTable(@PathVariable Long id, @CurrentSecurityContext(expression = "authentication.principal") UserEntity user) {
+        return mesaService.deleteTable(id, user.getId());
+    }
 }

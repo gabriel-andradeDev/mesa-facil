@@ -14,6 +14,7 @@ import com.quiosque.mesafacil.user.service.WaiterService;
 import com.quiosque.mesafacil.user.enums.UserRole;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -129,6 +130,43 @@ public class ProductService {
         tableService.getTableById(tableId, userId);
         List<ProductEntity> products = productRepository.findAllByMesaIdIdAndAdminId(tableId, adminId);
         return products.stream().map(mapper::productToResponse).toList();
+    }
+
+    public ResponseEntity<ResponseProductDTO> updateProduct(
+            Long id,
+            ProductEntity dto,
+            Long userId
+    ) {
+        UserEntity user = userService.getUserById(userId);
+
+        ProductEntity product = productRepository.findById(id).orElse(null);
+
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Long adminId = user.getRole() == UserRole.WAITER
+                ? waiterService.getAdminForUser(user).getId()
+                : user.getId();
+
+        if (!product.getAdmin().getId().equals(adminId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        ProductEntity updatedProduct = new ProductEntity();
+        updatedProduct.setName(dto.getName() != null ? dto.getName() : product.getName());
+        updatedProduct.setPrice(dto.getPrice() != null ? dto.getPrice() : product.getPrice());
+        updatedProduct.setDescription(dto.getDescription() != null ? dto.getDescription() : product.getDescription());
+        updatedProduct.setStatus(dto.getStatus() != null ? dto.getStatus() : product.getStatus());
+        updatedProduct.setQuantity(dto.getQuantity() != null ? dto.getQuantity() : product.getQuantity());
+        updatedProduct.setMesaId(dto.getMesaId() != null ? dto.getMesaId() : product.getMesaId());
+        updatedProduct.setAdmin(product.getAdmin());
+        updatedProduct.setCreatedBy(product.getCreatedBy());
+        updatedProduct.setId(product.getId());
+
+        productRepository.save(updatedProduct);
+
+        return ResponseEntity.ok(mapper.productToResponse(updatedProduct));
     }
 
 }

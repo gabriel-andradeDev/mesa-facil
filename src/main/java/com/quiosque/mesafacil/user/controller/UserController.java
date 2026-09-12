@@ -55,4 +55,9 @@ public class UserController {
     public WaiterDTO getWaiterById(@PathVariable Long id) {
         return this.waiterService.getWaiterById(id);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ResponseUserDTO> updateUser(@PathVariable Long id, @RequestBody CreateUserDTO dto, @CurrentSecurityContext(expression = "authentication.principal") UserEntity user) {
+        return this.userService.updateUser(id, dto, user.getId());
+    }
 }

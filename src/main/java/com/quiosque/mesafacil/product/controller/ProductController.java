@@ -48,4 +48,9 @@ public class ProductController {
     public ResponseEntity<ResponseProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductEntity dto, @CurrentSecurityContext(expression = "authentication.principal") UserEntity user) {
         return productService.updateProduct(id, dto, user.getId());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id, @CurrentSecurityContext(expression = "authentication.principal") UserEntity user) {
+        return productService.deleteProduct(id, user.getId());
+    }
 }

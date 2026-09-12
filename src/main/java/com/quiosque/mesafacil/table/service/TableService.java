@@ -87,4 +87,10 @@ public class TableService {
 
         return ResponseEntity.ok(mesaMapper.entityToResponse(mesa));
     }
+
+    public ResponseEntity<Void> deleteTable(Long id, Long userId) {
+        TableEntity mesa = getTableById(id, userId);
+        mesaRepository.delete(mesa);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,4 +23,6 @@ public class ResponseProductDTO {
     private String WaiterName;
     private Integer tableNumber;
     private String titular;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

@@ -4,5 +4,5 @@ public enum ProductEnum {
     PENDING,
     COMPLETED,
     CANCELLED,
-    IN_LINE
+    IN_PREPARATION
 }

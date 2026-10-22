@@ -18,6 +18,8 @@ public class ProductMapper {
         response.setStatus(product.getStatus());
         response.setTableNumber(product.getMesa().getNumber());
         response.setTitular(product.getMesa().getTitular());
+        response.setCreatedAt(product.getCreatedAt());
+        response.setUpdatedAt(product.getUpdatedAt());
 
         if (product.getCreatedBy() != null) {
             response.setWaiterName(product.getCreatedBy().getName());
